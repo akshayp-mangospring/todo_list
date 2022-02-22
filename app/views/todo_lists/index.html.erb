@@ -1,0 +1,50 @@
+<div class="container mt-5">
+  <h1 class="text-center"> Stuff to do</h1>
+  <% if @todo_lists.length > 0 %>
+    <div class="d-flex mb-3">
+      <%= link_to 'Create a To do list', new_todo_list_url, class: 'ms-auto btn btn-primary' %>
+    </div>
+    <ul class="row list-unstyled">
+      <% @todo_lists.each do |todo_list| %>
+        <li class="col-4">
+          <div class="d-flex align-items-center mb-3">
+            <span class="fs-3"><%= todo_list.title %></span>
+            <a class="fs-3 ms-auto star-todo-list"
+              href="javascript: void(0);"
+              title="<%= todo_list.starred ? 'Remove from important' : 'Mark important' %>"
+              data-href="<%= todo_list_star_path(todo_list.id) %>"
+            >
+              <i class="<%= todo_list.starred ? 'fas' : 'far' %> fa-star"></i>
+            </a>
+          </div>
+            <% if todo_list.todo_items.length > 0 %>
+              <ul class="list-group mb-3">
+                <% todo_list.todo_items.each do |todo_item| %>
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    <span><%= todo_item.content %></span>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p class="text-center">It appears pretty empty here! Try adding an item to do.</p>
+            <% end %>
+          <div>
+            <%= form_with model: [todo_list, TodoItem.new] do |f| %>
+              <%= f.hidden_field :todo_list_id, value: todo_list.id %>
+              <div class="d-flex">
+                <%= f.text_field :content, class: 'form-control' %>
+                <%= f.submit 'Add Item', class: 'btn btn-primary' %>
+              </div>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="d-flex flex-column align-items-center">
+      <p class="m-5">It appears pretty empty here! Try adding a List of things to do.</p>
+      <%= link_to 'Create a To do list', new_todo_list_url, class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

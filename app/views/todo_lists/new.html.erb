@@ -1,0 +1,7 @@
+<%= form_with model: @todo_list do |f| %>
+  <div class="d-flex mb-2 form-control">
+    <%= f.label :title, 'List Title', class: 'width-100px' %>
+    <%= f.text_field :title, class: 'ml-1' %>
+  </div>
+  <%= f.submit 'Create List', class: 'btn btn-primary' %>
+<% end %>
